@@ -10,15 +10,15 @@ Datasets: **London Climate & Household (LCL)** and **Combined Heat and Power (CH
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/hierarchical-forecast.git
-cd hierarchical-forecast
+git clone https://github.com/qaisertalia/hierarchical-reconciliation.git
+cd hierarchical-reconciliation
 
 # 2. Install dependencies
 pip install -r requirements.txt
 
 # 3. Add your data (see Data section below)
 
-# 4. Choose dataset — edit line 16 of config/settings.py
+# 4. Choose dataset — edit line 12 of config/settings.py
 #    DATASET = 'lcl'   or   DATASET = 'chp'
 
 # 5. Run notebooks in order
@@ -42,41 +42,35 @@ Answer these to know which config values to check:
 ## Folder structure
 
 ```
-hierarchical-forecast/
+hierarchical-reconciliation/
 │
 ├── config/
 │   ├── __init__.py
-│   └── settings.py          ← EDIT THIS to switch datasets
+│   └── settings.py                        ← EDIT THIS to switch datasets
 │
-├── notebooks/               ← run in order
-│   ├── 01_ingest.ipynb
-│   ├── 02_quality.ipynb
-│   ├── 03_resample.ipynb
-│   ├── 04_features.ipynb
-│   ├── 05_forecast.ipynb
-│   ├── 05b_crossval.ipynb   ← only run if forecast quality gate fails
-│   ├── 06_coherency.ipynb
-│   ├── 07_reconcile_flat.ipynb
-│   ├── 08_metrics_flat.ipynb
-│   ├── 09_clustering.ipynb
-│   ├── 10_reconcile_structured.ipynb
-│   ├── 11_metrics_structured.ipynb
-│   └── 12_report.ipynb
+├── notebooks/                             ← run in order
+│   ├── 01_ingest_corrected.ipynb
+│   ├── 02_quality_updated.ipynb
+│   ├── 03_resample_updated.ipynb
+│   ├── 04_features_updated.ipynb
+│   ├── 05_forecast_lcl_optimized.ipynb
+│   ├── 05_forecast_chp_cleaned.ipynb
+│   ├── 06_coherency_optimized.ipynb
+│   ├── 07_reconcile_updated (1).ipynb
+│   ├── 08_clustering_updated.ipynb
+│   └── 08c_statistical_tests_fixed.ipynb
 │
 ├── utils/
 │   ├── __init__.py
-│   ├── notebook_setup.py    ← imported as first cell in every notebook
-│   ├── cleaning.py          ← missing value functions
-│   ├── metrics.py           ← MAPE, RMSE, sMAPE
-│   └── plotting.py          ← shared chart functions
+│   └── notebook_setup.py                  ← imported as first cell in every notebook
 │
-├── data/                    ← NOT committed to GitHub
+├── data/                                  ← NOT committed to GitHub
 │   ├── raw/
-│   │   ├── lcl/             ← place LCL block CSVs + metadata + weather here
-│   │   └── chp/             ← place chp_data.csv here
-│   └── output/              ← parquets written by notebooks
+│   │   ├── lcl/                           ← place LCL block CSVs + metadata + weather here
+│   │   └── chp/                           ← private dataset, not publicly available
+│   └── output*/                           ← parquets written by notebooks
 │
-├── results/                 ← NOT committed to GitHub
+├── results/                               ← NOT committed to GitHub
 │   ├── figures/
 │   └── reports/
 │
@@ -98,7 +92,8 @@ Data is not included in this repository. Download and place files as follows:
 - Place `weather_hourly_darksky.csv` in `data/raw/lcl/`
 
 **CHP**
-- Place `chp_data.csv` in `data/raw/chp/`
+- Private dataset — cannot be shared or redistributed. Not publicly downloadable.
+- Anyone reproducing the CHP results needs their own access to equivalent data, placed in `data/raw/chp/` with the schema expected by `config/settings.py` (`CHP` block).
 
 ---
 
@@ -110,15 +105,11 @@ Data is not included in this repository. Download and place files as follows:
 | 02 | Quality control | raw_long | `clean_long.parquet` |
 | 03 | Window + resample | clean_long | `df_daily / hourly / native.parquet` |
 | 04 | Feature engineering | df_daily | `df_features.parquet` |
-| 05 | Forecast | df_features | `forecasts_individual / aggregate.parquet` |
-| 05b | Cross-validation *(conditional)* | df_features | `cv_results.parquet`, updates forecasts |
+| 05 | Forecast (LCL or CHP variant) | df_features | `forecasts_individual / aggregate.parquet` |
 | 06 | Coherency gap | forecasts | `coherency_gap.parquet` |
-| 07 | Reconcile flat | forecasts | `reconciled_flat.parquet` |
-| 08 | Metrics flat | reconciled_flat | `metrics_flat.parquet` |
-| 09 | Clustering | df_features | `cluster_labels_*.parquet` |
-| 10 | Reconcile structured | forecasts + cluster_labels | `reconciled_*.parquet` |
-| 11 | Metrics structured | reconciled_* | `metrics_structured.parquet` |
-| 12 | Report | all parquets | `dso_decision_report.json` |
+| 07 | Reconcile | forecasts | `reconciled.parquet` |
+| 08 | Clustering | df_features | `cluster_labels_*.parquet` |
+| 08c | Statistical tests | reconciled + cluster_labels | test results |
 
 ---
 
