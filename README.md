@@ -115,6 +115,6 @@ Data is not included in this repository. Download and place files as follows:
 
 ## Research questions
 
-1. How large is the coherency gap and does it scale with sample size?
-2. Does flat MinT reconciliation improve or hurt individual unit accuracy?
-3. Does a structured S matrix (Ward / metadata / random) improve accuracy vs flat MinT while keeping the gap at zero?
+1. **RQ1: Quantifying incoherence.** What is the magnitude of the coherency gap in real-world grid-connected systems, and how does it vary across forecasting approaches?
+2. **RQ2: Mechanism of improvement.** How does hierarchy depth affect the redistribution of reconciliation corrections across aggregation levels, and why does this redistribution improve operational applicability?
+3. **RQ3: Structure vs. method.** Does hierarchy depth or clustering algorithm choice drive reconciliation performance improvements, does this hold across both local and global forecasting models, and what design rules can we establish for practitioners?
