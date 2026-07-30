@@ -1,0 +1,33 @@
+# ── Data — never commit raw or output data to GitHub ─────────────────────────
+data/raw/
+data/output*/
+data/processed/
+*.sqlite
+
+# ── Results — figures and reports are generated, not source ──────────────────
+results/figures/
+results/reports/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# ── Environments ─────────────────────────────────────────────────────────────
+.env
+.venv/
+venv/
+env/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
